@@ -1,5 +1,7 @@
+# FIXA SÅ ATT INTE +=
+
 def tokenize(lines):
-    tokens = []  # Lista som lagrar alla tokens
+    words = []  # Lista som lagrar alla tokens
 
     for line in lines:  # Loopa igenom varje textrad
         current_word = ""
@@ -10,7 +12,7 @@ def tokenize(lines):
             if char.isalpha():
                 # Om vi tidigare byggde ett tal, spara talet
                 if current_type == "digit":
-                    tokens.append(current_word)
+                    words.append(current_word)
                     current_word = ""
 
                 current_word += char.lower()
@@ -19,7 +21,7 @@ def tokenize(lines):
             elif char.isdigit():
                 # Om vi tidigare byggde ett ord, spara ordet
                 if current_type == "alpha":
-                    tokens.append(current_word)
+                    words.append(current_word)
                     current_word = ""
 
                 current_word += char
@@ -28,16 +30,29 @@ def tokenize(lines):
             else:
                 # Om ett ord eller tal har byggts upp, spara det
                 if current_word != "":
-                    tokens.append(current_word)
+                    words.append(current_word)
                     current_word = ""
                     current_type = ""
 
                 # Skiljetecken blir egna tokens
                 if not char.isspace():
-                    tokens.append(char)
+                    words.append(char)
 
         # Lägg till sista ordet/talet på raden
         if current_word != "":
-            tokens.append(current_word)
+            words.append(current_word)
 
-    return tokens
+    return words
+
+def countWords(words, stopwords): 
+    counted_words = {}
+
+    for word in words:
+        if word not in stopwords:
+
+            if word in counted_words:
+                counted_words[word] += 1
+            else:
+                counted_words[word] = 1
+
+    return counted_words
