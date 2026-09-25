@@ -45,14 +45,17 @@ def tokenize(lines):
     return words
 
 def countWords(words, stopwords): 
-    counted_words = {}
+    frequencies = {} # Skapa en dictionary för att lagra vilka ord samt hur många gånger de förekommer
 
-    for word in words:
-        if word not in stopwords:
+    for word in words: # Loopar igenom alla ord 
+        if word not in stopwords: # Om ordet inte finns i stopwords, räkna med det 
 
-            if word in counted_words:
-                counted_words[word] += 1
-            else:
-                counted_words[word] = 1
+            if word in frequencies: # Om ordet redan förekommit, öka antal gånger det förekommit
+                frequencies[word] += 1
+            else: # Om ordet inte förekommit, lägg till det i dictionariyt med antal 1
+                frequencies[word] = 1
 
-    return counted_words
+    return frequencies # Returnera dictionaryt med räknade ord
+
+def printTopMost(frequencies, n):
+    pass
