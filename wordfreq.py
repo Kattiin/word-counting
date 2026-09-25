@@ -1,34 +1,43 @@
-def tokenize(filename):
+def tokenize(lines):
     tokens = []  # Lista som lagrar alla tokens
 
-    with open(filename, "r") as file:  # Öppna filen för läsning
+    for line in lines:  # Loopa igenom varje textrad
+        current_word = ""
+        current_type = ""
 
-        for line in file:  # Loopa igenom varje rad i filen
+        for char in line:  # Loopa igenom varje tecken i raden
 
-            current_word = ""  # Skapa en variabel för ordet som byggs upp
+            if char.isalpha():
+                # Om vi tidigare byggde ett tal, spara talet
+                if current_type == "digit":
+                    tokens.append(current_word)
+                    current_word = ""
 
-            for char in line:  # Loopa igenom varje tecken i raden
+                current_word += char.lower()
+                current_type = "alpha"
 
-                if char.isalpha() or char.isdigit():
-                    # Om tecknet är en bokstav eller siffra läggs det till i current_word
-                    current_word += char.lower()
+            elif char.isdigit():
+                # Om vi tidigare byggde ett ord, spara ordet
+                if current_type == "alpha":
+                    tokens.append(current_word)
+                    current_word = ""
 
-                else:
-                    if current_word != "":
-                        # Om ett ord har byggts upp läggs det till i tokens
-                        tokens.append(current_word)
+                current_word += char
+                current_type = "digit"
 
-                        current_word = ""  # Nollställer current_word
+            else:
+                # Om ett ord eller tal har byggts upp, spara det
+                if current_word != "":
+                    tokens.append(current_word)
+                    current_word = ""
+                    current_type = ""
 
-                    if not char.isspace():
-                        # Om tecknet inte är ett mellanslag läggs det till som en egen token
-                        tokens.append(char)
+                # Skiljetecken blir egna tokens
+                if not char.isspace():
+                    tokens.append(char)
 
-            if current_word != "":
-                # Lägg till sista ordet på raden om det fortfarande finns ett ord kvar
-                tokens.append(current_word)
+        # Lägg till sista ordet/talet på raden
+        if current_word != "":
+            tokens.append(current_word)
 
-    return tokens  # Returnera listan med alla tokens
-
-
-print(tokenize("examples/article1.txt"))
+    return tokens
