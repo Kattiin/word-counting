@@ -1,5 +1,3 @@
-# FIXA SÅ ATT INTE +=
-
 def tokenize(lines):
     words = []  # Lista som lagrar alla tokens
 
@@ -15,7 +13,7 @@ def tokenize(lines):
                     words.append(current_word)
                     current_word = ""
 
-                current_word += char.lower()
+                current_word = current_word + char.lower()
                 current_type = "alpha"
 
             elif char.isdigit():
@@ -24,7 +22,7 @@ def tokenize(lines):
                     words.append(current_word)
                     current_word = ""
 
-                current_word += char
+                current_word = current_word + char
                 current_type = "digit"
 
             else:
@@ -44,18 +42,29 @@ def tokenize(lines):
 
     return words
 
-def countWords(words, stopwords): 
-    frequencies = {} # Skapa en dictionary för att lagra vilka ord samt hur många gånger de förekommer
 
-    for word in words: # Loopar igenom alla ord 
-        if word not in stopwords: # Om ordet inte finns i stopwords, räkna med det 
+def countWords(words, stopwords):
+    frequencies = {}  # Skapa en dictionary för att lagra vilka ord samt hur många gånger de förekommer
 
-            if word in frequencies: # Om ordet redan förekommit, öka antal gånger det förekommit
-                frequencies[word] += 1
-            else: # Om ordet inte förekommit, lägg till det i dictionariyt med antal 1
+    for word in words:  # Loopar igenom alla ord
+        if word not in stopwords:  # Om ordet inte finns i stopwords, räkna med det
+
+            if word in frequencies:  # Om ordet redan förekommit, öka antal gånger det förekommit
+                frequencies[word] = frequencies[word] + 1
+            else:  # Om ordet inte förekommit, lägg till det i dictionaryt med antal 1
                 frequencies[word] = 1
 
-    return frequencies # Returnera dictionaryt med räknade ord
+    return frequencies  # Returnera dictionaryt med räknade ord
+
 
 def printTopMost(frequencies, n):
-    pass
+    # Sortera orden efter hur många gånger de förekommer, flest först
+    sorted_frequencies = sorted(
+        frequencies.items(),
+        key=lambda x: x[1],
+        reverse=True
+    )
+
+    # Skriv ut de n vanligaste orden
+    for word, frequency in sorted_frequencies[:n]:
+        print(word.ljust(20) + str(frequency).rjust(5))
